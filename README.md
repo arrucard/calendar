@@ -49,7 +49,7 @@ The Recurrence struct is modeled after the recurring schedule data model used by
 
 **Recurrence Pattern Code M (monthly)**
 
- - MonthlyWeekOfMonth - week of the month to recur on. e.g. Thanksgiving is always on the 4th week of the month. Must be used together with MonthlyDayOfWeek
+ - MonthlyWeekOfMonth - week of the month to recur on. e.g. Thanksgiving is always on the 4th week of the month. Value 5 will mean also the last occurrence since for example last Monday of the month can be in 5th or 4th week. Must be used together with MonthlyDayOfWeek
  - MonthlyDayOfWeek - day of the week to recur on (0=Sunday, 1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday, 6=Saturday). Must be used together with MonthlyWeekOfMonth
  **OR**
  - MonthlyDay - day of the month to recur on. e.g. 5 would recur on the 5th of every month
