@@ -233,6 +233,9 @@ func getMonthOccurrence(startDate, timePeriodStart, timePeriodEnd time.Time, mon
 	if monthlyDay != nil {
 		occurrence = time.Date(startDate.Year(), startDate.Month(), int(*monthlyDay), startDate.Hour(), startDate.Minute(), startDate.Second(), startDate.Nanosecond(), startDate.Location())
 	} else if monthlyDayOfWeek != nil && monthlyWeekOfMonth != nil {
+		if *monthlyWeekOfMonth == 5 { //find last weekday in the month and calculate
+			*monthlyWeekOfMonth = int16(weekOfMonth(lastWeekdayOfMonth(startDate, time.Weekday(*monthlyDayOfWeek))))
+		}
 		weekAdder := *monthlyWeekOfMonth
 		if *monthlyDayOfWeek >= int16(startDate.Weekday()) { // first of my desired day of week occurs in first week
 			weekAdder--
@@ -291,4 +294,33 @@ func getYears(fromDate, toDate time.Time) int {
 	}
 
 	return years
+}
+
+//helpers
+func newDate(year int, month time.Month, day int) time.Time {
+	return  time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+}
+
+func firstDayOfMonth(date time.Time) time.Time {
+	return newDate(date.Year(), date.Month(), 1)
+}
+
+func lastDayOfMonth(date time.Time) time.Time {
+	return newDate(date.Year(), date.Month(), 1).AddDate(0,1, -1)
+}
+
+func lastWeekdayOfMonth(date time.Time, weekday time.Weekday) time.Time {
+	lastDay := lastDayOfMonth(date)
+
+	for weekday != lastDay.Weekday() {
+		lastDay = lastDay.AddDate(0,0,-1)
+	}
+
+	return lastDay
+}
+
+func weekOfMonth(date time.Time) int{
+	date = newDate(date.Year(), date.Month(), date.Day())
+	beginOfMonth := firstDayOfMonth(date)
+	return int(math.Floor(date.Sub(beginOfMonth).Hours() / 24 / 7)) + 1
 }

@@ -267,11 +267,11 @@ func TestGetMonthOccurrence(t *testing.T) {
 		t.Error("expected 5/19/2016", date)
 	}
 
-	monthlyDayOfWeek = 4   // Thursday
-	monthlyWeekOfMonth = 5 // 5th week
+	monthlyDayOfWeek = 3   // Wednesday
+	monthlyWeekOfMonth = 5 // 5th week or treat it as a last weekday occurence in a month
 	date = getMonthOccurrence(startDate, timePeriodStart, timePeriodEnd, nil, &monthlyDayOfWeek, &monthlyWeekOfMonth)
-	if len(date) != 0 {
-		t.Error("expected no 5th Thursday", date)
+	if len(date) != 1 || date[0] != time.Date(2016, 5, 25, 12, 30, 0, 0, time.UTC) {
+		t.Error("expected 5/25", date)
 	}
 
 	monthlyDayOfWeek = 2   // Thursday
