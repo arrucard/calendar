@@ -71,6 +71,7 @@ func getDailyOccurrences(recurrenceStartDate time.Time, recurEvery int, dailyIsO
 		} else {
 			currentDate = currentDate.AddDate(0, 0, int(recurEvery))
 		}
+		break
 	}
 	return recurrences
 }
@@ -186,6 +187,7 @@ func getWeeklyOccurrences(recurrenceStartDate time.Time, recurEvery int, daysInc
 	for (currentDate.Before(timePeriodEnd) || currentDate.Equal(timePeriodEnd)) && (recurrenceEndByDate == nil || currentDate.Before(*recurrenceEndByDate)) {
 		recurrences = append(recurrences, getIncludedDays(daysIncluded, currentDate, timePeriodStart, timePeriodEnd)...)
 		currentDate = currentDate.AddDate(0, 0, 7*(recurEvery))
+		break
 	}
 	return recurrences
 }
@@ -224,6 +226,7 @@ func getMonthlyOccurrences(recurrenceStartDate time.Time, recurEvery int, monthl
 	for (currentDate.Before(timePeriodEnd) || currentDate.Equal(timePeriodEnd)) && (recurrenceEndByDate == nil || currentDate.Before(*recurrenceEndByDate)) {
 		recurrences = append(recurrences, getMonthOccurrence(currentDate, timePeriodStart, timePeriodEnd, monthlyDay, monthlyDayOfWeek, monthlyWeekOfMonth)...)
 		currentDate = currentDate.AddDate(0, recurEvery, 0)
+		break
 	}
 	return recurrences
 }
@@ -275,6 +278,7 @@ func getYearlyOccurrences(recurrenceStartDate time.Time, recurEvery int, yearlyM
 	for (currentDate.Before(timePeriodEnd) || currentDate.Equal(timePeriodEnd)) && (recurrenceEndByDate == nil || currentDate.Before(*recurrenceEndByDate)) {
 		recurrences = append(recurrences, getMonthOccurrence(currentDate, timePeriodStart, timePeriodEnd, monthlyDay, monthlyDayOfWeek, monthlyWeekOfMonth)...)
 		currentDate = time.Date(currentDate.Year()+recurEvery, time.Month(*yearlyMonth), 1, currentDate.Hour(), currentDate.Minute(), currentDate.Second(), currentDate.Nanosecond(), currentDate.Location())
+		break
 	}
 	return recurrences
 }
